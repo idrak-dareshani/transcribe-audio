@@ -4,7 +4,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 import string
 
 # Download required NLTK data (run once)
-# nltk.download('punkt')
+#nltk.download('punkt')
 
 class UrduTextFormatter:
     def __init__(self):
