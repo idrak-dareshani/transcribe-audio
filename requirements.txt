@@ -2,3 +2,4 @@ faster_whisper
 huggingface_hub[hf_xet]
 regex
 nltk
+difflib

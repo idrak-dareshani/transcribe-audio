@@ -1,13 +1,16 @@
 import re
-import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
 import string
+from spell_checker import UrduSpellChecker
 
 # Download required NLTK data (run once)
+#import ntlk
 #nltk.download('punkt')
 
 class UrduTextFormatter:
     def __init__(self):
+        self.spell_checker = UrduSpellChecker()
+
         # Common Urdu pause indicators and their replacements
         self.pause_patterns = {
             r'\s+(اور|اور پھر|پھر|لیکن|مگر|البتہ|تاہم)\s+': r'. \1 ',
@@ -152,32 +155,43 @@ class UrduTextFormatter:
         
         return text
 
-    def format_transcript(self, text, add_paragraphs=True):
-        """Main formatting function"""
+    def format_transcript(self, text, add_paragraphs=True, spell_check=True, auto_correct=True):
+        """Main formatting function with spell checking"""
+        spell_check_results = None
+
         # Step 1: Clean the text
         text = self.clean_text(text)
         
-        # Step 2: Format religious content
+        # Step 2: Spell check (if enabled)
+        if spell_check:
+            spell_check_results = self.spell_checker.spell_check_text(text, auto_correct=auto_correct)
+            if auto_correct:
+                text = spell_check_results['corrected_text']
+
+        # Step 3: Format religious content
         text = self.format_religious_content(text)
         
-        # Step 3: Add sentence breaks
+        # Step 4: Add sentence breaks
         text = self.add_sentence_breaks(text)
         
-        # Step 4: Add question marks
+        # Step 5: Add question marks
         text = self.add_question_marks(text)
         
-        # Step 5: Add commas
+        # Step 6: Add commas
         text = self.add_commas(text)
         
-        # Step 6: Add paragraphs
+        # Step 7: Add paragraphs
         if add_paragraphs:
             text = self.add_paragraphs(text)
         
-        # Step 7: Final cleanup
+        # Step 8: Final cleanup
         text = re.sub(r'\s+([.!?])', r'\1', text)  # Remove spaces before punctuation
         text = re.sub(r'([.!?])\s*([.!?])', r'\1', text)  # Remove duplicate punctuation
         
-        return text
+        return {
+            'formatted_text': text,
+            'spell_check_results': spell_check_results
+        }
 
 # Alternative approach using machine learning
 def format_with_ml_approach(text):
@@ -255,11 +269,11 @@ def main():
     """
     
     # Format the text
-    formatted_text = formatter.format_transcript(sample_text)
+    formatted_text = formatter.format_transcript(sample_text, spell_check=False, auto_correct=False)
     print("Original text:")
     print(sample_text)
     print("\nFormatted text:")
     print(formatted_text)
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
