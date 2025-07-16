@@ -1,6 +1,6 @@
-from difflib import SequenceMatcher
 import json
 import os
+import re
 
 class UrduSpellChecker:
     def __init__(self):
@@ -384,10 +384,6 @@ class UrduSpellChecker:
         except Exception as e:
             print(f"Could not save dictionary: {e}")
     
-    def similarity(self, a, b):
-        """Calculate similarity between two strings"""
-        return SequenceMatcher(None, a, b).ratio()
-    
     def get_suggestions(self, word, max_suggestions=3):
         """Get spelling suggestions for a word"""
         suggestions = []
@@ -399,12 +395,6 @@ class UrduSpellChecker:
         # Check common corrections first
         if word in self.common_corrections:
             return [self.common_corrections[word]]
-        
-        # Find similar words in dictionary
-        for correct_word in self.urdu_dictionary:
-            similarity_score = self.similarity(word, correct_word)
-            if similarity_score > 0.6:  # Threshold for similarity
-                suggestions.append((correct_word, similarity_score))
         
         # Sort by similarity and return top suggestions
         suggestions.sort(key=lambda x: x[1], reverse=True)

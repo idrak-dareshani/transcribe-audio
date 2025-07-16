@@ -24,7 +24,7 @@ def main():
         print(f"    Suggestions: {correction['suggestions']}")
     
     # Format the text with spell checking enabled
-    result = formatter.format_transcript(sample_text, spell_check=True, auto_correct=True)
+    result = formatter.format_transcript(sample_text)
     formatted_text = result['formatted_text']
     
     print("\n" + "="*50)
@@ -41,7 +41,7 @@ def main():
     formatter.save_dictionary()
 
 # Function to integrate with Faster Whisper
-def process_whisper_transcription(audio_file, model_size="large-v2"):
+def process_whisper_transcription(audio_file, model_size="large-v3"):
     """Complete pipeline: Whisper transcription + formatting + spell checking"""
     from faster_whisper import WhisperModel
     
@@ -51,11 +51,7 @@ def process_whisper_transcription(audio_file, model_size="large-v2"):
     
     # Format and spell check
     formatter = UrduTextFormatter()
-    formatted_result = formatter.format_transcript(
-        result["text"], 
-        spell_check=True, 
-        auto_correct=True
-    )
+    formatted_result = formatter.format_transcript(result["text"])
     
     # Save results
     output_data = {

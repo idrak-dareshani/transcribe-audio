@@ -2,4 +2,7 @@ faster_whisper
 huggingface_hub[hf_xet]
 regex
 nltk
-difflib
+
+# Download required NLTK data (run once)
+#import nltk
+#nltk.download('punkt')

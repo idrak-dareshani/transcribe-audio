@@ -3,10 +3,6 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 import string
 from spell_checker import UrduSpellChecker
 
-# Download required NLTK data (run once)
-#import ntlk
-#nltk.download('punkt')
-
 class UrduTextFormatter:
     def __init__(self):
         self.spell_checker = UrduSpellChecker()
@@ -157,7 +153,7 @@ class UrduTextFormatter:
     
     def get_spell_check_report(self, text):
         """Get detailed spell check report"""
-        results = self.spell_checker.spell_check_text(text, auto_correct=False)
+        results = self.spell_checker.spell_check_text(text)
         return results
     
     def add_word_to_dictionary(self, word):
@@ -286,7 +282,7 @@ def main():
     """
     
     # Format the text
-    formatted_text = formatter.format_transcript(sample_text, spell_check=False, auto_correct=False)
+    formatted_text = formatter.format_transcript(sample_text)
     print("Original text:")
     print(sample_text)
     print("\nFormatted text:")
