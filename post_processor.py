@@ -154,6 +154,23 @@ class UrduTextFormatter:
         text = re.sub(r'\s+', ' ', text)
         
         return text
+    
+    def get_spell_check_report(self, text):
+        """Get detailed spell check report"""
+        results = self.spell_checker.spell_check_text(text, auto_correct=False)
+        return results
+    
+    def add_word_to_dictionary(self, word):
+        """Add word to spell checker dictionary"""
+        self.spell_checker.add_word_to_dictionary(word)
+    
+    def add_correction(self, wrong_word, correct_word):
+        """Add correction to spell checker"""
+        self.spell_checker.add_correction(wrong_word, correct_word)
+    
+    def save_dictionary(self, file_path="urdu_dictionary.json"):
+        """Save custom dictionary"""
+        self.spell_checker.save_custom_dictionary(file_path)
 
     def format_transcript(self, text, add_paragraphs=True, spell_check=True, auto_correct=True):
         """Main formatting function with spell checking"""
